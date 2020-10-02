@@ -1,9 +1,6 @@
 ﻿using LocacaoBiblioteca.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LocacaoBiblioteca.Controller
 {
@@ -12,18 +9,55 @@ namespace LocacaoBiblioteca.Controller
         private LocacaoContext contextDB = new LocacaoContext();//inicia a classe do LocacaoContext
         public MatchScoreController()
         {
-            
 
-        }    
-       
-        public void AdicionarLivro(MatchScore livro)
-        {
-            livro.Id = contextDB.IdHistoricoContador++;
-            contextDB.PersonalMatchScores.Add(livro);
+
         }
-        public List<MatchScore> RetornaListaScore()
+
+        public void AddMatchScore(MatchScore score)
         {
-            return contextDB.PersonalMatchScores.Where(x => x.Ativo).ToList<MatchScore>(); 
+            
+            score.Id = contextDB.IdHistoricoContador++;
+            score.Min = ScoreResults(score.Score).Min;
+            score.Max = ScoreResults(score.Score).Min;
+            contextDB.PersonalMatchScores.Add(score);
+        }
+
+        public MatchScore ScoreResults(int score) 
+        {
+            var scoreResult = new MatchScore();
+            //var lowestScore = 0;
+            //var hightestScore = 0;
+            var result = contextDB.PersonalMatchScores.Where(x => x.Ativo).ToList<MatchScore>();
+            var currentLowestScore = result.Min(x => x.Score);
+            var currentHightestScore = result.Max(x => x.Score);
+
+            if (!result.Any())
+            {
+                scoreResult.Min = score;
+                scoreResult.Max = score;
+            }
+            scoreResult.Min = currentLowestScore;
+            scoreResult.Max = currentHightestScore;
+
+            return scoreResult;
+        }
+
+        public int HightestScore(int score)
+        {
+            var hightestScore = 0;
+            var result = contextDB.PersonalMatchScores.Where(x => x.Ativo).ToList<MatchScore>();
+            var currentLowestScore = result.Max(x => x.Score);
+
+            if (!result.Any())
+                hightestScore = score;
+            hightestScore = currentLowestScore;
+
+            return hightestScore;
+        }
+
+        public List<MatchScore> GetMatchScores()
+        {
+            return contextDB.PersonalMatchScores.Where(x => x.Ativo).ToList<MatchScore>();
             //where(..ativo) onde o where procura retorno BOOLEAN do Ativo, que seriam os TRUE apenas
             //quando passa pela lambda '=>' deixa de ser lista, o ToList faz voltar a ser lista
         }
@@ -32,7 +66,7 @@ namespace LocacaoBiblioteca.Controller
         /// Metodo para desativar registro do livro selecionado pelo ID
         /// </summary>
         /// <param name="intentificadoID"></param>
-        public void RemoverLivroPorID(int intentificadoID)
+        public void RemoveScoreById(int intentificadoID)
         {
             //aqui usamos FirstOrDefault para localiza nosso usuario dentro da lista
             //com isso conseguimos acessar as propriedades dele e desativar o registro

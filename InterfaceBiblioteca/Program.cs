@@ -1,29 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LocacaoBiblioteca.Controller;
+﻿using LocacaoBiblioteca.Controller;
 using LocacaoBiblioteca.Model;
+using System;
 
 
 namespace Interface
 {
     class Program
-    {              
-        static MatchScoreController livroController = new MatchScoreController();//Instanciamos "Carregamos para memoria, nosso controlador de livros
-        static UsuarioController usuarioController = new UsuarioController();
+    {
+        static MatchScoreController matchScoreController = new MatchScoreController();//Instanciamos "Carregamos para memoria, nosso controlador de livros
+        static UsuarioController userController = new UsuarioController();
 
         static void Main(string[] args)
         {
-
-            Console.WriteLine("SISTEMA DE LOCAÇÃO DE LIVROS 1.0");
-            TrocaDeUsuario();
+            string title = "SISTEMA DE PONTUAL PESSOAL POR PARTIDAS 1.0";
+            Console.WriteLine(title);
+            SwitchUser();
             MostraMenuSistema();
             Console.ReadKey();
 
         }
-        private static void TrocaDeUsuario()// chama o teste de usuario, caso login/senha INVALIDOS, fica travado no login e acessa MENU
+        private static void SwitchUser()// chama o teste de usuario, caso login/senha INVALIDOS, fica travado no login e acessa MENU
         {
             while (!RealizaLoginSistema())
                 Console.WriteLine("Login ou senha inválido.");
@@ -34,56 +30,61 @@ namespace Interface
         /// </summary>
         private static void MostraMenuSistema()
         {
-            
+
             var opcao = int.MinValue;//variavel iniciada com menor valor de int possivel
-            
+
             while (opcao != 0)//Menu em LOOP até que aperte 0 "zero"
             {
                 Console.Clear();
-                Console.WriteLine("SISTEMA DE LOCAÇÃO DE LIVROS 1.0");
+                string titulo = "SISTEMA DE PONTUAL PESSOAL POR PARTIDAS 1.0";
+                string mensagemPadrao = "Aperte qualquer tecla para retornar ao MENU";
+                Console.WriteLine(titulo);
                 //Mostras as opcoes do menu em sistema
                 Console.WriteLine("Menu Sistema:");
                 Console.WriteLine("1 - Listar usuários");
-                Console.WriteLine("2 - Listar Livros");
+                Console.WriteLine("2 - Listar Pontuação Pessoal");
                 Console.WriteLine("3 - Cadastrar Usuários");
-                Console.WriteLine("4 - Cadastrar Livros");
+                Console.WriteLine("4 - Cadastrar Resultado da Partida");
                 Console.WriteLine("5 - Troca de Usuário");
                 Console.WriteLine("6 - Remover Usuário");
-                Console.WriteLine("7 - Remover Livro");
+                Console.WriteLine("7 - Remover Resultado");
                 Console.WriteLine("0 - Sair");
                 opcao = int.Parse(Console.ReadKey(true).KeyChar.ToString());
                 switch (opcao)
                 {
 
                     case 1:
-                        ListagemUsuarios(); Console.ReadKey();
+                        GetUsers(); Console.ReadKey();
                         break;
                     case 2:
-                        ListagemLivros(); Console.ReadKey();
+                        Console.Clear();
+                        GetMatchScores();
+                        Console.WriteLine(mensagemPadrao);
+                        Console.ReadKey();
                         break;
                     case 3:
-                        CadastraUsuario(); Console.ReadKey();
+                        CreateUser(); Console.ReadKey();
                         break;
                     case 4:
-                        CadastraLivro(); 
+                        AddPersonalMatchScore();
                         break;
                     case 5:
-                        TrocaDeUsuario(); 
+                        SwitchUser();
                         break;
                     case 6:
-                        RemoverUsuario();
+                        DeleteUser();
                         break;
                     case 7:
-                        RemoverLivro();
+                        RemoveScoreById();
                         break;
 
                     case 0:
                         return;
                     default:
                         break;
-                }         
-            
-        }             
+                }
+
+            }
 
         }
         /// <summary>
@@ -92,7 +93,7 @@ namespace Interface
         /// <returns>Returna  TRUE-FALSE quando informado login e senha</returns>
         private static bool RealizaLoginSistema()
         {
-            
+
             Console.WriteLine("Informe seu login e senha para acessar o sistema:");
 
             Console.WriteLine("Login: ");
@@ -108,57 +109,58 @@ namespace Interface
             usuario.Senha = senhaDoUsuario;
             *///item para senhaDo...
 
-            return usuarioController.LoginSistema(new Usuario()
+            return userController.Authenticate(new User()
             {
                 Login = loginDoUsuario,
-                Senha = senhaDoUsuario
+                Password = senhaDoUsuario
             });
-            
+
         }
         /// <summary>
-        /// Lista todos os livros registrados
+        /// Lista todos os resultados registrados
         /// </summary>
-        private static void ListagemLivros()//"Retorna..Livros" =private List<Livro> ListaDeLivros {get;set;} mas usado em metodo PUBLIC para conseguir LER e nao ESCREVER
+        private static void GetMatchScores()
         {
-            livroController.RetornaListaScore().ForEach(l => Console.WriteLine($"ID: {l.Id} -- Nome: {l.Score}"));//imprime todos os livros cadastrados
+            Console.WriteLine($"Jogo|Placar|Mínimo da Temporada|Máximo da Temporada|Quebra Recorde Mínimo|Quebra Recorde Máximo");
+            matchScoreController.GetMatchScores().ForEach(l => Console.WriteLine($"{l.Id}      {l.Score}            {l.Min}                 {l.Max}                  {l.MinRecordBreakCount}                 {l.MaxRecordBreakCount}"));//imprime todos os livros cadastrados
         }
-        private static void ListagemUsuarios()
+        private static void GetUsers()
         {
             //mostra a lista de usuarios ja cadastrados
             Console.Clear();
-            usuarioController.RetornaListaDeUsuarios().ForEach(i => Console.WriteLine($"ID: {i.Id} -- Login: {i.Login}"));
-            
+            userController.RetornaListaDeUsuarios().ForEach(i => Console.WriteLine($"ID: {i.Id} -- Login: {i.Login}"));
+
         }
         /// <summary>
         /// Metodo que cadastra usuarios pelo programa acessando e registrando na lista da classe
         /// </summary>
-        private static void CadastraUsuario()
+        private static void CreateUser()
         {
-            
-            Usuario usuario = new Usuario();// inicia objeto'usuario' (lista)
+
+            User user = new User();
             Console.WriteLine("Login a ser cadastrado:");
-            usuario.Login = Console.ReadLine();
+            user.Login = Console.ReadLine();
             Console.WriteLine("Senha a ser cadastrada:");
-            usuario.Senha = Console.ReadLine();
+            user.Password = Console.ReadLine();
             Console.WriteLine("Cadastrado com sucesso!");
-            new Usuario() //lista (um ou mais objetos)
+            new User()
             {
-                Login = usuario.Login,
-                Senha = usuario.Senha,
-                Ativo = true                
+                Login = user.Login,
+                Password = user.Password,
+                Ativo = true
             };
-            usuarioController.AdicionaUsuario(usuario);
+            userController.CreateUser(user);
         }
 
         /// <summary>
         /// Metodo que adiciona ("cadastra") novos livros 
         /// </summary>
-        private static void CadastraLivro()
+        private static void AddPersonalMatchScore()
         {
-            Console.WriteLine("Cadastrar livro em sistema:");
-            Console.WriteLine("Informe o título de livro");
+            Console.WriteLine("Cadastrar Novo Resultado");
+            Console.WriteLine("Informe sua pontuaçao pessoal da partida");
             var nomeDoLivro = int.Parse(Console.ReadLine());
-            livroController.AdicionarLivro(new MatchScore()//livroControler objeto(variavel) que recebeu a CLASSE LISTA LivroController
+            matchScoreController.AddMatchScore(new MatchScore()//livroControler objeto(variavel) que recebeu a CLASSE LISTA LivroController
             {
                 Score = nomeDoLivro //,
                 //Id = livroController.ListaDeLivros.Count+1
@@ -171,27 +173,27 @@ namespace Interface
         /// Metodo que desativa registro (troca Ativo TRUE por FALSE
         /// ocultando da lista pois a mesma retorna apenas ativo igual a true
         /// </summary>
-        private static void RemoverUsuario()
+        private static void DeleteUser()
         {
             Console.WriteLine("Desativação de Usuários");
-            ListagemUsuarios();//chama o metodo que ja mostrava lista de usuarios
+            GetUsers();//chama o metodo que ja mostrava lista de usuarios
             Console.WriteLine("Informe o ID do usuário a ser desativado:");
             var usuarioID = int.Parse(Console.ReadLine());
             //metodo da classe recebe variavel INT "usuarioID" do programa para conferir remocao
-            usuarioController.RemoverUsuarioPorID(usuarioID);
+            userController.DeleteUserById(usuarioID);
 
             Console.WriteLine("Usuário desativado!");//retorna mensagem apos remover/desativar usuario
             Console.ReadKey();
 
         }
-        private static void RemoverLivro()
+        private static void RemoveScoreById()
         {
-            Console.WriteLine("Remoção de exemplar/livro do catálogo");
-            ListagemLivros();//chama o metodo que ja mostrava lista de livros
-            Console.WriteLine("Informe o ID do livro a ser desativado:");
+            Console.WriteLine("Remoção de Resultado");
+            GetMatchScores();
+            Console.WriteLine("Informe o ID do resultado a ser removido:");
             var livroID = int.Parse(Console.ReadLine());
-            
-            livroController.RemoverLivroPorID(livroID);
+
+            matchScoreController.RemoveScoreById(livroID);
 
             Console.WriteLine("Exemplar removido!");//retorna mensagem apos remover/desativar usuario
             Console.ReadKey();

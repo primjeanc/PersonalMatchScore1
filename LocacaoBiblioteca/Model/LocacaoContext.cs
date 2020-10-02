@@ -13,19 +13,19 @@ namespace LocacaoBiblioteca.Model
         public LocacaoContext()
         {
             #region RelacaoUsuarios
-            ListaDeUsuarios = new List<Usuario>();// CONSTRUTOR
-            ListaDeUsuarios.Add(new Usuario() //lista (um ou mais objetos)
+            Users = new List<User>();// CONSTRUTOR
+            Users.Add(new User() //lista (um ou mais objetos)
             {
                 Login = "Admin",
-                Senha = "Admin",
+                Password = "Admin",
                 Ativo = true,
                 Id = IdContador++//contador++ incrementa apos a acao . ID comecou no 1, salvaria 1, e mudaria a espera para 2.
                                  //"++contador" incrementa antes. ID comecou no 1, salvaria 2
-            });            
-            ListaDeUsuarios.Add(new Usuario()
+            });
+            Users.Add(new User()
             {
                 Login = "Maria",
-                Senha = "Maria",
+                Password = "Maria",
                 Ativo = true,
                 Id = IdContador++
             });
@@ -56,7 +56,7 @@ namespace LocacaoBiblioteca.Model
             });
             #endregion
         }
-        public List<Usuario> ListaDeUsuarios { get; set; }
+        public List<User> Users { get; set; }
         public List<MatchScore> PersonalMatchScores { get; set; }
     }
 }

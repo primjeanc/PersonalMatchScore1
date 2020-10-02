@@ -28,38 +28,38 @@ namespace LocacaoBiblioteca.Controller
         /// </summary>
         /// <param name="Usuario">Passamos um objeto de nome Ususario como parametro</param>        
         /// <returns>Retorna verdadeiro quando existir o usuario com este login e senha</returns>
-        public bool LoginSistema(Usuario usuarios)//Usuarios= id,login,senha etc
+        public bool Authenticate(User usuarios)//Usuarios= id,login,senha etc
         {
             //como a lista ja foi inicializada e salva na memoria na propria classe, o teste na LISTA de USUARIOS fica mais simples
-            return contextDB.ListaDeUsuarios.Exists(u => u.Login == usuarios.Login && u.Senha == usuarios.Senha);
+            return contextDB.Users.Exists(u => u.Login == usuarios.Login && u.Password == usuarios.Password);
             /*if (usuarios.Login == "Admin" && usuarios.Senha == "Admin")
                 return true;
             else
                 return false;*/// antigo teste
         }
         
-        public void AdicionaUsuario(Usuario usuario)//cadastro de usuario na lista criada acima "ListaDeUsuarios"
+        public void CreateUser(User usuario)//cadastro de usuario na lista criada acima "ListaDeUsuarios"
         {
             usuario.Id = contextDB.IdContador++;
-            contextDB.ListaDeUsuarios.Add(usuario);
+            contextDB.Users.Add(usuario);
         }
         /// <summary>
         /// Metodo publico pra mostrar ListaDeUsuarios ATIVOS(que esta privada na CLASSE para evitar acesso externo)
         /// </summary>
         /// <returns></returns>
-        public List<Usuario> RetornaListaDeUsuarios()
+        public List<User> RetornaListaDeUsuarios()
         {
-            return contextDB.ListaDeUsuarios.Where(x => x.Ativo).ToList<Usuario>();
+            return contextDB.Users.Where(x => x.Ativo).ToList<User>();
         }
         /// <summary>
         /// Metodo que desativa um regstro de usuario cadastrado em nossa lista
         /// </summary>
         /// <param name="intentificadoID">intendifica usuario a ser desativado</param>
-        public void RemoverUsuarioPorID(int intentificadoID)
+        public void DeleteUserById(int intentificadoID)
         {
             //aqui usamos FirstOrDefault para localiza nosso usuario dentro da lista
             //com isso conseguimos acessar as propriedades dele e desativar o registro
-            contextDB.ListaDeUsuarios.FirstOrDefault(x => x.Id == intentificadoID).Ativo = false;
+            contextDB.Users.FirstOrDefault(x => x.Id == intentificadoID).Ativo = false;
         }
     }
 }

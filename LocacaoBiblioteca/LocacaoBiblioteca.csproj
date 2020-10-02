@@ -46,7 +46,7 @@
     <Compile Include="Model\MatchScore.cs" />
     <Compile Include="Model\LocacaoContext.cs" />
     <Compile Include="Model\BaseEntity.cs" />
-    <Compile Include="Model\Usuario.cs" />
+    <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
