@@ -1,0 +1,6 @@
+E:\Developer\MatchScore1\LocacaoBiblioteca\bin\Debug\LocacaoBiblioteca.dll
+E:\Developer\MatchScore1\LocacaoBiblioteca\bin\Debug\LocacaoBiblioteca.pdb
+E:\Developer\MatchScore1\LocacaoBiblioteca\obj\Debug\LocacaoBiblioteca.csprojAssemblyReference.cache
+E:\Developer\MatchScore1\LocacaoBiblioteca\obj\Debug\LocacaoBiblioteca.csproj.CoreCompileInputs.cache
+E:\Developer\MatchScore1\LocacaoBiblioteca\obj\Debug\LocacaoBiblioteca.dll
+E:\Developer\MatchScore1\LocacaoBiblioteca\obj\Debug\LocacaoBiblioteca.pdb
