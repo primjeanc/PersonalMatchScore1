@@ -2,12 +2,11 @@
 using LocacaoBiblioteca.Model;
 using System;
 
-
 namespace Interface
 {
     class Program
     {
-        static MatchScoreController matchScoreController = new MatchScoreController();//Instanciamos "Carregamos para memoria, nosso controlador de livros
+        static MatchScoreController matchScoreController = new MatchScoreController();
         static UsuarioController userController = new UsuarioController();
 
         static void Main(string[] args)
@@ -19,19 +18,16 @@ namespace Interface
             Console.ReadKey();
 
         }
-        private static void SwitchUser()// chama o teste de usuario, caso login/senha INVALIDOS, fica travado no login e acessa MENU
+        private static void SwitchUser()
         {
             while (!RealizaLoginSistema())
                 Console.WriteLine("Login ou senha inválido.");
         }
-
-        /// <summary>
-        /// Mostra no Console o Menu apos logar em sistema
-        /// </summary>
+ 
         private static void MostraMenuSistema()
         {
 
-            var opcao = int.MinValue;//variavel iniciada com menor valor de int possivel
+            var opcao = int.MinValue;
 
             while (opcao != 0)//Menu em LOOP até que aperte 0 "zero"
             {
@@ -87,10 +83,7 @@ namespace Interface
             }
 
         }
-        /// <summary>
-        /// Realiza login em sistema [entrando login/senha]. Retorna teste TRUE/FALSE do login [validação]
-        /// </summary>
-        /// <returns>Returna  TRUE-FALSE quando informado login e senha</returns>
+  
         private static bool RealizaLoginSistema()
         {
 
@@ -101,14 +94,6 @@ namespace Interface
             Console.WriteLine("Senha: ");
             var senhaDoUsuario = Console.ReadLine();
 
-            //UsuarioController usuarioController = new UsuarioController();//esse cara esta RESETANDO A LISTA NA HORA DE VALIDAR NOVOSO USUARIOS
-            //o sistema cadastra usuarios e lista eles, mas quando vai LOGAR, os novos logins nao funcionam
-            /*
-             * Usuario usuario = new Usuario();//objeto usuario recebe Classe Usuario inicializada 'new'
-            usuario.Login = loginDoUsuario;//atribui Login ao loginDoUsuario
-            usuario.Senha = senhaDoUsuario;
-            *///item para senhaDo...
-
             return userController.Authenticate(new User()
             {
                 Login = loginDoUsuario,
@@ -116,24 +101,19 @@ namespace Interface
             });
 
         }
-        /// <summary>
-        /// Lista todos os resultados registrados
-        /// </summary>
+
         private static void GetMatchScores()
         {
             Console.WriteLine($"Jogo|Placar|Mínimo da Temporada|Máximo da Temporada|Quebra Recorde Mínimo|Quebra Recorde Máximo");
-            matchScoreController.GetMatchScores().ForEach(l => Console.WriteLine($"{l.Id}      {l.Score}            {l.Min}                 {l.Max}                  {l.MinRecordBreakCount}                 {l.MaxRecordBreakCount}"));//imprime todos os livros cadastrados
+            matchScoreController.GetMatchScores().ForEach(l => Console.WriteLine($"{l.Id}      {l.Score}            {l.Min}                 {l.Max}                  {l.MinRecordBreakCount}                 {l.MaxRecordBreakCount}"));
         }
         private static void GetUsers()
         {
-            //mostra a lista de usuarios ja cadastrados
             Console.Clear();
             userController.RetornaListaDeUsuarios().ForEach(i => Console.WriteLine($"ID: {i.Id} -- Login: {i.Login}"));
 
         }
-        /// <summary>
-        /// Metodo que cadastra usuarios pelo programa acessando e registrando na lista da classe
-        /// </summary>
+
         private static void CreateUser()
         {
 
@@ -152,37 +132,29 @@ namespace Interface
             userController.CreateUser(user);
         }
 
-        /// <summary>
-        /// Metodo que adiciona ("cadastra") novos livros 
-        /// </summary>
         private static void AddPersonalMatchScore()
         {
             Console.WriteLine("Cadastrar Novo Resultado");
             Console.WriteLine("Informe sua pontuaçao pessoal da partida");
             var nomeDoLivro = int.Parse(Console.ReadLine());
-            matchScoreController.AddMatchScore(new MatchScore()//livroControler objeto(variavel) que recebeu a CLASSE LISTA LivroController
+            matchScoreController.AddMatchScore(new MatchScore()
             {
-                Score = nomeDoLivro //,
-                //Id = livroController.ListaDeLivros.Count+1
+                Score = nomeDoLivro      
             });
             Console.WriteLine("Livro cadastrado com sucesso.");
             Console.ReadKey();
         }
 
-        /// <summary>
-        /// Metodo que desativa registro (troca Ativo TRUE por FALSE
-        /// ocultando da lista pois a mesma retorna apenas ativo igual a true
-        /// </summary>
         private static void DeleteUser()
         {
             Console.WriteLine("Desativação de Usuários");
-            GetUsers();//chama o metodo que ja mostrava lista de usuarios
+            GetUsers();
             Console.WriteLine("Informe o ID do usuário a ser desativado:");
             var usuarioID = int.Parse(Console.ReadLine());
-            //metodo da classe recebe variavel INT "usuarioID" do programa para conferir remocao
+            
             userController.DeleteUserById(usuarioID);
 
-            Console.WriteLine("Usuário desativado!");//retorna mensagem apos remover/desativar usuario
+            Console.WriteLine("Usuário desativado!");
             Console.ReadKey();
 
         }
@@ -195,7 +167,7 @@ namespace Interface
 
             matchScoreController.RemoveScoreById(livroID);
 
-            Console.WriteLine("Exemplar removido!");//retorna mensagem apos remover/desativar usuario
+            Console.WriteLine("Exemplar removido!");
             Console.ReadKey();
         }
 

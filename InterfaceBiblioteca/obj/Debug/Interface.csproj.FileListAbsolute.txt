@@ -8,3 +8,6 @@ E:\Developer\MatchScore1\InterfaceBiblioteca\obj\Debug\Interface.csproj.CoreComp
 E:\Developer\MatchScore1\InterfaceBiblioteca\obj\Debug\Interface.csproj.CopyComplete
 E:\Developer\MatchScore1\InterfaceBiblioteca\obj\Debug\InterfaceBiblioteca.exe
 E:\Developer\MatchScore1\InterfaceBiblioteca\obj\Debug\InterfaceBiblioteca.pdb
+E:\Developer\MatchScore1\InterfaceBiblioteca\bin\Debug\nunit.framework.dll
+E:\Developer\MatchScore1\InterfaceBiblioteca\bin\Debug\nunit.framework.pdb
+E:\Developer\MatchScore1\InterfaceBiblioteca\bin\Debug\nunit.framework.xml

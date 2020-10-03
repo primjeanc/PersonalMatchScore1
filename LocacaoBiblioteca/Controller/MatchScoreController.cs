@@ -14,31 +14,39 @@ namespace LocacaoBiblioteca.Controller
         }
 
         public void AddMatchScore(MatchScore score)
-        {
-            
+        {            
             score.Id = contextDB.IdHistoricoContador++;
             score.Min = ScoreResults(score.Score).Min;
-            score.Max = ScoreResults(score.Score).Min;
+            score.Max = ScoreResults(score.Score).Max;
+            score.MinRecordBreakCount = ScoreResults(score.Score).MinRecordBreakCount;
+            score.MaxRecordBreakCount = ScoreResults(score.Score).MaxRecordBreakCount;
             contextDB.PersonalMatchScores.Add(score);
         }
 
         public MatchScore ScoreResults(int score) 
         {
             var scoreResult = new MatchScore();
-            //var lowestScore = 0;
-            //var hightestScore = 0;
+            var lowestRecordBreak = 0;
+            var highestRecordBreak = 0;
+
             var result = contextDB.PersonalMatchScores.Where(x => x.Ativo).ToList<MatchScore>();
-            var currentLowestScore = result.Min(x => x.Score);
-            var currentHightestScore = result.Max(x => x.Score);
+            var currentLowestScore = result.Any()? result.Min(x => x.Score): score;
+            var currentHightestScore = result.Any()? result.Max(x => x.Score): score;
 
             if (!result.Any())
             {
                 scoreResult.Min = score;
                 scoreResult.Max = score;
+                scoreResult.MinRecordBreakCount = lowestRecordBreak;
+                scoreResult.MaxRecordBreakCount = highestRecordBreak;
+
             }
             scoreResult.Min = currentLowestScore;
             scoreResult.Max = currentHightestScore;
-
+            if (score < scoreResult.Min)
+                scoreResult.MinRecordBreakCount++;
+            if (score > scoreResult.Max)
+                scoreResult.MaxRecordBreakCount++;
             return scoreResult;
         }
 
@@ -57,24 +65,14 @@ namespace LocacaoBiblioteca.Controller
 
         public List<MatchScore> GetMatchScores()
         {
-            return contextDB.PersonalMatchScores.Where(x => x.Ativo).ToList<MatchScore>();
-            //where(..ativo) onde o where procura retorno BOOLEAN do Ativo, que seriam os TRUE apenas
-            //quando passa pela lambda '=>' deixa de ser lista, o ToList faz voltar a ser lista
+            return contextDB.PersonalMatchScores.Where(x => x.Ativo).ToList<MatchScore>();          
         }
 
-        /// <summary>
-        /// Metodo para desativar registro do livro selecionado pelo ID
-        /// </summary>
-        /// <param name="intentificadoID"></param>
         public void RemoveScoreById(int intentificadoID)
-        {
-            //aqui usamos FirstOrDefault para localiza nosso usuario dentro da lista
-            //com isso conseguimos acessar as propriedades dele e desativar o registro
+        {            
             var livro = contextDB.PersonalMatchScores.FirstOrDefault(x => x.Id == intentificadoID);
             if (livro != null)
-                livro.Ativo = false;
-            //usando if(...) ao inves de usar direto '.Ativo = false' para evitar erro ao tentar remover ID que nao existe ou n foi encontrado
-            //poderia usar IF no usuarioController tambem
+                livro.Ativo = false;           
         }
     }
 }

@@ -4,3 +4,11 @@ E:\Developer\MatchScore1\LocacaoBiblioteca\obj\Debug\LocacaoBiblioteca.csprojAss
 E:\Developer\MatchScore1\LocacaoBiblioteca\obj\Debug\LocacaoBiblioteca.csproj.CoreCompileInputs.cache
 E:\Developer\MatchScore1\LocacaoBiblioteca\obj\Debug\LocacaoBiblioteca.dll
 E:\Developer\MatchScore1\LocacaoBiblioteca\obj\Debug\LocacaoBiblioteca.pdb
+E:\Developer\MatchScore1\LocacaoBiblioteca\bin\Debug\nunit.framework.dll
+E:\Developer\MatchScore1\LocacaoBiblioteca\bin\Debug\xunit.abstractions.dll
+E:\Developer\MatchScore1\LocacaoBiblioteca\bin\Debug\xunit.core.dll
+E:\Developer\MatchScore1\LocacaoBiblioteca\bin\Debug\nunit.framework.pdb
+E:\Developer\MatchScore1\LocacaoBiblioteca\bin\Debug\nunit.framework.xml
+E:\Developer\MatchScore1\LocacaoBiblioteca\bin\Debug\xunit.abstractions.xml
+E:\Developer\MatchScore1\LocacaoBiblioteca\bin\Debug\xunit.core.xml
+E:\Developer\MatchScore1\LocacaoBiblioteca\obj\Debug\LocacaoBiblioteca.csproj.CopyComplete
